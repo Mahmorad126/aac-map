@@ -60,7 +60,7 @@
         .setLngLat(feature.geometry.coordinates)
         .setHTML(
           `          
-          <img src="${feature.properties.img_url}" width=100%>
+          <img src="${feature.properties.img_url}" style="max-width:100%">
           <h3><a href="${feature.properties.project_url}">${feature.properties.Project_name}</a></h3>
           `
         )
