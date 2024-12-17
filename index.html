@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Points on a map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.css" rel="stylesheet">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.js"></script>
+
+  <div id="map"></div>
+  <script>
+    // The value for 'accessToken' begins with 'pk...'
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWFodGFibW9yYWRpIiwiYSI6ImNtNDV2eG1rODBhNzcybHI2anFybW9pZXEifQ.y8adXZ3VbMIibdfVrOpV2A';
+    const map = new mapboxgl.Map({
+      container: 'map',
+      // Replace YOUR_STYLE_URL with your style URL.
+      style: 'mapbox://styles/mahtabmoradi/cm45w0x4w013001r204yial5p',
+      center: [4.3572, 50.8477],
+      zoom: 11.0
+    });
+
+    /*
+   Add an event listener that runs
+    when a user clicks on the map element.
+   */
+    map.on('click', (event) => {
+      // If the user clicked on one of your markers, get its information.
+      const features = map.queryRenderedFeatures(event.point, {
+        layers: ['aac-buildings'] // replace with your layer name
+      });
+      if (!features.length) {
+        return;
+      }
+      const feature = features[0];
+      // Code from the next step will go here.
+      /*
+          Create a popup, specify its options
+          and properties, and add it to the map.
+       */
+      console.log(feature.properties);
+      const popup = new mapboxgl.Popup({ offset: [0, -15] })
+        .setLngLat(feature.geometry.coordinates)
+        .setHTML(
+          `          
+          <img src="${feature.properties.img_url}" width=100%>
+          <h3><a href="${feature.properties.project_url}">${feature.properties.Project_name}</a></h3>
+          `
+        )
+        .addTo(map);
+
+    }); 
+  </script>
+</body>
+
+</html>
